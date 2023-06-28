@@ -8,7 +8,6 @@
     <slot/>
 
     <div class="side">
-      <CharacterWindow/>
       <button @click="signOut">Sign out</button>
     </div>
 <slot/>

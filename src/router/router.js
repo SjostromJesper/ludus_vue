@@ -12,7 +12,7 @@ let localUser;
 const routes = [
     {path: '/overview', name: 'Overview', component: Overview, meta: {requiresAuth: true}},
     {path: '/random-duel', name: 'RandomDUel', components: {home: RandomDuel}, meta: {requiresAuth: true}},
-    {path: '/sign-in', name: 'SignIn', component: SignIn, meta: {requiresAuth: false}},
+    {path: '/', name: 'SignIn', component: SignIn, meta: {requiresAuth: false}},
     {path: '/sign-up', name: 'SignUp', component: SignUp, meta: {requiresAuth: false}},
 ]
 
@@ -27,7 +27,7 @@ const getUser = async (next) => {
     console.log(localUser)
 
     if(localUser.data.session === null) {
-        next('/sign-in')
+        next('/')
     }
     else {
         next()
@@ -37,12 +37,14 @@ const getUser = async (next) => {
 router.beforeEach( async (to, from, next) => {
     const userStore = await useUserStore()
 
+
+    console.log(userStore.userId)
     if(to.meta.requiresAuth) {
-        if(userStore.user) next()
-        else next('/sign-in')
+        if(userStore.userId) next()
+        else next('/')
     }
     else {
-        if(userStore.user) next('/overview')
+        if(userStore.userId) next('/overview')
         else next()
     }
 })

@@ -1,13 +1,13 @@
 <template>
     <div class="app">
-      <div class="side" v-if="userStore.user">
+      <div class="side" v-if="userStore.userId">
         <router-link to="/overview">Overview</router-link>
         <router-link to="/random-duel">Duel</router-link>
       </div>
 
       <RouterView />
 
-      <div class="side" v-if="userStore.user">
+      <div class="side" v-if="userStore.userId">
         <CharacterWindow/>
         <button @click="signOut">Sign out</button>
       </div>
@@ -21,6 +21,11 @@ import CharacterWindow from "./components/CharacterWindow.vue";
 import {useRouter} from "vue-router";
 import {useUserStore} from "./stores/userStore.js";
 import {useCharacterStore} from "./stores/characterStore.js";
+
+
+
+
+
 
 const session = ref()
 
@@ -40,7 +45,7 @@ const signOut = async () => {
   if(!error) {
     userStore.clearUser()
     characterStore.clearCharacter()
-    await router.push('/sign-in')
+    await router.push('/')
   }
 }
 </script>

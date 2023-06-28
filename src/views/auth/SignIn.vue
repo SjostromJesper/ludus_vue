@@ -2,8 +2,8 @@
   <div class="sign-in-wrapper">
     <form class="sign-in" @submit.prevent="signIn">
       <h1>NEW ARENAN</h1>
-      <input type="email" placeholder="Your email" v-model="email"/>
-      <input type="password" placeholder="Your Password" v-model="password"/>
+      <input type="text" placeholder="Username" v-model="email"/>
+      <input type="password" placeholder="Password" v-model="password"/>
       <button type="submit">Sign In</button>
       <p>Don't have an account?
         <router-link to="/sign-up">Sign Up</router-link>
@@ -27,22 +27,25 @@ const password = ref('')
 
 const localUser = ref(null)
 
+import {auth} from "../../utils/socket.js";
+
 const signIn = async () => {
-  console.log("signing in")
 
-  const {data, error} = await supabase.auth.signInWithPassword({
-    email: email.value,
-    password: password.value,
-  })
+  const data = await auth(email.value, password.value)
 
-  if (error) {
-    console.log(error)
-  } else {
-    await userStore.load()
-    await router.push('/overview')
-  }
+  console.log(data)
 
-  localUser.value = await supabase.auth.getSession()
+  // if (error) {
+  //   console.log(error)
+  // } else {
+  //   await userStore.load()
+  //
+  // }
+
+  userStore.setUser(data.data)
+  userStore.setUserId(data.data.id)
+  await router.push('/overview')
+  // localUser.value = await supabase.auth.getSession()
 }
 
 

@@ -8,66 +8,66 @@ export const useCharacterStore = defineStore('character', () => {
     const history = ref()
     const isSearching = ref()
 
-    async function load(id) {
-        console.log("character store load id:", id)
+    // async function load(id) {
+    //     console.log("character store load id:", id)
+    //
+    //     let {error, data: character} = await supabase
+    //         .from('characters')
+    //         .select()
+    //         .eq('owner', id)
+    //         .limit(1)
+    //         .single()
+    //
+    //     console.log("error", error)
+    //
+    //     console.log("character", character)
+    //
+    //     this.character = character
+    // }
 
-        let {error, data: character} = await supabase
-            .from('characters')
-            .select()
-            .eq('owner', id)
-            .limit(1)
-            .single()
+    // async function realtime(id) {
+    //     console.log("realtime activated")
+    //
+    //     const channel = supabase
+    //         .channel('character_update')
+    //         .on(
+    //             'postgres_changes',
+    //             {
+    //                 event: '*',
+    //                 schema: 'public',
+    //                 table: 'characters',
+    //                 filter: 'owner=eq.' + id
+    //             },
+    //             (payload) => {
+    //                 const eventType = payload.eventType
+    //                 const newRecord = payload.new
+    //                 const oldRecord = payload.old
+    //
+    //                 console.log(newRecord)
+    //
+    //                 this.character = newRecord
+    //             }
+    //         )
+    //         .subscribe()
+    // }
 
-        console.log("error", error)
-
-        console.log("character", character)
-
-        this.character = character
-    }
-
-    async function realtime(id) {
-        console.log("realtime activated")
-
-        const channel = supabase
-            .channel('character_update')
-            .on(
-                'postgres_changes',
-                {
-                    event: '*',
-                    schema: 'public',
-                    table: 'characters',
-                    filter: 'owner=eq.' + id
-                },
-                (payload) => {
-                    const eventType = payload.eventType
-                    const newRecord = payload.new
-                    const oldRecord = payload.old
-
-                    console.log(newRecord)
-
-                    this.character = newRecord
-                }
-            )
-            .subscribe()
-    }
-
-    async function duelPolling() {
-        console.log("ping")
-        console.log("owner:", character.value.owner)
-        axios.get('http://localhost:3000/match-ping', {
-            params: {id: character.value.owner}
-        }).then(res => {
-            console.log(res)
-            this.isSearching = res.data.status === true;
-
-            console.log("TODOTODO")
-
-            if (res.data.status) {
-                console.log("reccur")
-                setTimeout(duelPolling, 5000)
-            }
-        })
-    }
+    // async function duelPolling() {
+    //     console.log("ping")
+    //     console.log("owner:", character.value.owner)
+    //     axios.get('http://localhost:3000/match-ping', {
+    //         params: {id: character.value.owner}
+    //     }).then(res => {
+    //         console.log(res)
+    //         this.isSearching = res.data.status === true;
+    //
+    //         console.log("TODOTODO")
+    //
+    //         if (res.data.status) {
+    //             console.log("reccur")
+    //             setTimeout(duelPolling, 5000)
+    //         }
+    //     })
+    // }
 
     async function setIsSearching(value) {
         isSearching.value = value
@@ -84,9 +84,9 @@ export const useCharacterStore = defineStore('character', () => {
         character,
         history,
         isSearching,
-        load,
-        realtime,
-        duelPolling,
+        // load,
+        // realtime,
+        // duelPolling,
         setIsSearching,
         clearCharacter
     }
