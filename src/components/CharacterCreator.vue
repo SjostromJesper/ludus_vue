@@ -66,6 +66,9 @@ const remaining = computed(() => {
   let used = 0
 
   for (let stat in stats) {
+    if(stats[stat] < 0 || typeof stats[stat] === "string" ) {
+      stats[stat] = 0
+    }
     used += stats[stat]
   }
 
