@@ -44,8 +44,10 @@
 import {useUserStore} from "../stores/userStore.js";
 import {ref, computed, reactive} from "vue";
 import {createCharacter} from "../utils/socket.js";
+import {useCharacterStore} from "../stores/characterStore.js";
 
 const userStore = useUserStore()
+const characterStore = useCharacterStore()
 
 const points = 50
 
@@ -80,7 +82,11 @@ const submit = () => {
   const characterData = {...stats}
   characterData.name = name.value
 
-  createCharacter(characterData, userStore.userId)
+  createCharacter(characterData, userStore.userId).then(res => {
+    characterStore.setCharacter(res.data.characterData)
+  })
+
+
 }
 
 </script>

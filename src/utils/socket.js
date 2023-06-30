@@ -1,5 +1,6 @@
 import {io} from "socket.io-client";
 import axios from "axios";
+
 let socket;
 
 const url = import.meta.env.VITE_SERVER_URL
@@ -18,14 +19,15 @@ export const auth = async (username, password) => {
 }
 
 export const register = async (email, password, username) => {
-    console.log(email)
-    console.log(password)
-    console.log(username)
+    console.log("register")
+    console.log(url)
     const data = await axios.post(url + '/register', {username: username, password: password, email: email})
+    console.log("dororro", data)
+    console.log("spela")
 }
 
 export const createCharacter = async (characterData, userId) => {
-    const data = await axios.post(url + '/create-character', {characterData, userId})
+    return await axios.post(url + '/create-character', {characterData, userId})
 }
 
 const startSocket = (user) => {

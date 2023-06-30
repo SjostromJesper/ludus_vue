@@ -7,7 +7,9 @@
       <input type="password" placeholder="Your Password" v-model="password"/>
       <p v-if="success">account created!</p>
       <button type="submit">Sign Up</button>
-      <p>Already have an account? <router-link to="/">Log in</router-link></p>
+      <p>Already have an account?
+        <router-link to="/">Log in</router-link>
+      </p>
     </form>
 
   </div>
@@ -16,6 +18,9 @@
 <script setup>
 import {ref} from "vue";
 import {register} from "../../utils/socket.js";
+import {useRouter} from "vue-router";
+
+const router = useRouter()
 
 const email = ref('')
 const password = ref('')
@@ -25,7 +30,9 @@ const success = ref(null)
 
 const signUp = async () => {
   register(email.value, password.value, username.value).then(response => {
-      success.value = response
+    console.log("account created")
+    success.value = response
+    router.push('/')
   })
 }
 </script>

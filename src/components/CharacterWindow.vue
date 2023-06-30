@@ -1,5 +1,5 @@
 <template>
-<div class="character-window">
+<div class="character-window" v-if="characterStore.character">
   <p>{{characterStore.character.name}}</p>
   <p>{{characterStore.character.current_health}}/{{characterStore.character.max_health}}</p>
   <p>level: {{characterStore.character.level}}</p>
