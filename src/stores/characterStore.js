@@ -8,6 +8,10 @@ export const useCharacterStore = defineStore('character', () => {
     const history = ref()
     const isSearching = ref()
 
+    function setCharacter(data) {
+        character.value = data
+    }
+
     // async function load(id) {
     //     console.log("character store load id:", id)
     //
@@ -84,6 +88,7 @@ export const useCharacterStore = defineStore('character', () => {
         character,
         history,
         isSearching,
+        setCharacter,
         // load,
         // realtime,
         // duelPolling,

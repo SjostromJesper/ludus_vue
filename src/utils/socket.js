@@ -1,8 +1,8 @@
 import {io} from "socket.io-client";
 import axios from "axios";
-import {useUserStore} from "../stores/userStore.js";
-import {useCharacterStore} from "../stores/characterStore.js";
 let socket;
+
+const url = import.meta.env.VITE_SERVER_URL
 
 
 export const sendMessage = () => {
@@ -11,19 +11,25 @@ export const sendMessage = () => {
 }
 
 export const auth = async (username, password) => {
-    return await axios.post('http://localhost:8080/login', {username: username, password: password}).then(res => {
-        startSocket(res.data.data.id)
-
+    return await axios.post(url + '/login', {username: username, password: password}).then(res => {
+        startSocket(res.data.userData.id)
         return res.data
     })
 }
 
 export const register = async (email, password, username) => {
-    const data = await axios.post('http://localhost:8080/register', {username: 'pelle', password: 'pellesLösenord', email: 'pelle@pelle.pelle'})
+    console.log(email)
+    console.log(password)
+    console.log(username)
+    const data = await axios.post(url + '/register', {username: username, password: password, email: email})
+}
+
+export const createCharacter = async (characterData, userId) => {
+    const data = await axios.post(url + '/create-character', {characterData, userId})
 }
 
 const startSocket = (user) => {
-    socket = io('http://localhost:8080', {auth: {
+    socket = io(url, {auth: {
             token: "abc",
             user: user
         }})

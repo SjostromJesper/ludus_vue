@@ -2,10 +2,12 @@
   <div>
     <h1>New account</h1>
     <form class="sign-up" @submit.prevent="signUp">
+      <input type="text" placeholder="username" v-model="username"/>
       <input type="email" placeholder="Your email" v-model="email"/>
       <input type="password" placeholder="Your Password" v-model="password"/>
+      <p v-if="success">account created!</p>
       <button type="submit">Sign Up</button>
-      <p>Already have an account? <router-link to="/sign-in">Log in</router-link></p>
+      <p>Already have an account? <router-link to="/">Log in</router-link></p>
     </form>
 
   </div>
@@ -13,23 +15,18 @@
 
 <script setup>
 import {ref} from "vue";
-import {supabase} from "../../supabase.js";
+import {register} from "../../utils/socket.js";
 
 const email = ref('')
 const password = ref('')
+const username = ref('')
+
+const success = ref(null)
 
 const signUp = async () => {
-  const {data, error} = await supabase.auth.signUp({
-    email: email.value,
-    password: password.value
+  register(email.value, password.value, username.value).then(response => {
+      success.value = response
   })
-
-  if(error) {
-    console.log(error)
-  }
-  else {
-    console.log(data)
-  }
 }
 </script>
 

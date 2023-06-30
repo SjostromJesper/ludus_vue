@@ -45,6 +45,7 @@ const signOut = async () => {
   if(!error) {
     userStore.clearUser()
     characterStore.clearCharacter()
+    sessionStorage.clear()
     await router.push('/')
   }
 }

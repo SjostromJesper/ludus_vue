@@ -1,7 +1,7 @@
 <template>
   <div class="overview">
 
-    <div v-if="!userStore.user.character">
+    <div v-if="!characterStore.character">
       <CharacterCreator/>
     </div>
 
@@ -12,8 +12,10 @@
 <script setup>
 import {useUserStore} from "../stores/userStore.js";
 import CharacterCreator from "../components/CharacterCreator.vue";
+import {useCharacterStore} from "../stores/characterStore.js";
 
 const userStore = useUserStore()
+const characterStore = useCharacterStore()
 
 const doSomething = (event) => {
   console.log("create character")

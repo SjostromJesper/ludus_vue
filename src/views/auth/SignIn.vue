@@ -19,6 +19,7 @@ import {useRouter} from "vue-router"
 import {useUserStore} from "../../stores/userStore.js"
 
 const userStore = useUserStore()
+const characterStore = useCharacterStore()
 
 const router = useRouter()
 
@@ -28,9 +29,9 @@ const password = ref('')
 const localUser = ref(null)
 
 import {auth} from "../../utils/socket.js";
+import {useCharacterStore} from "../../stores/characterStore.js";
 
 const signIn = async () => {
-
   const data = await auth(email.value, password.value)
 
   console.log(data)
@@ -42,8 +43,9 @@ const signIn = async () => {
   //
   // }
 
-  userStore.setUser(data.data)
-  userStore.setUserId(data.data.id)
+  userStore.setUser(data.userData)
+  userStore.setUserId(data.userData.id)
+  characterStore.setCharacter(data.characterData)
   await router.push('/overview')
   // localUser.value = await supabase.auth.getSession()
 }

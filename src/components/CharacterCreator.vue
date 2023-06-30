@@ -1,13 +1,17 @@
 <template>
   <div class="character-creator">
     create new character
-    <form @submit.prevent="createCharacter">
+    <form @submit.prevent="submit">
 
       <label>
         name
-        <input type="text">
+        <input type="text" v-model="name">
       </label>
 
+      <label>
+        health
+        <input type="number" v-model="stats.health">
+      </label>
       <label>
         strength
         <input type="number" v-model="stats.strength">
@@ -39,11 +43,13 @@
 <script setup>
 import {useUserStore} from "../stores/userStore.js";
 import {ref, computed, reactive} from "vue";
+import {createCharacter} from "../utils/socket.js";
 
 const userStore = useUserStore()
 
 const points = 50
 
+const name = ref('')
 
 const stats = reactive({
   health: 0,
@@ -64,8 +70,17 @@ const remaining = computed(() => {
   return points - used
 })
 
-const createCharacter = () => {
+const submit = () => {
+  if(remaining.value !== 0) {
+    console.log("not correct amount of points spent")
+    return
+  }
+  console.log("woho!")
 
+  const characterData = {...stats}
+  characterData.name = name.value
+
+  createCharacter(characterData, userStore.userId)
 }
 
 </script>
