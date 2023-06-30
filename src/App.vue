@@ -9,6 +9,7 @@
 
       <div class="side" v-if="userStore.userId">
         <CharacterWindow/>
+        <router-link to="/equipment">Inventory</router-link>
         <button @click="signOut">Sign out</button>
       </div>
     </div>
