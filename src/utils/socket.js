@@ -30,6 +30,10 @@ export const createCharacter = async (characterData, userId) => {
     return await axios.post(url + '/create-character', {characterData, userId})
 }
 
+export const searchDuel = async (id) => {
+    return await axios.post(url + '/duel', {id: id})
+}
+
 const startSocket = (user) => {
     socket = io(url, {auth: {
             token: "abc",

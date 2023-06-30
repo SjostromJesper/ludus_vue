@@ -1,44 +1,29 @@
 <template>
-  <div class="random-duel">
-    <h2>Random duel</h2>
-    <p>search random duel. win battles for fame ang glory!</p>
-    <button @click="search">Enter the arena</button>
-    <p v-if="characterStore.getIsSearching">searching</p>
+<div class="random-duel">
+  <h2>Random duel</h2>
+  <button @click="search">search</button>
+  <div>
+    <h2>{{report.title}}</h2>
+    <p v-for="line in report.intro">{{line}}</p>
+    <p v-for="line in report.rounds">{{line}}</p>
+    <p v-for="line in report.outro">{{line}}</p>
   </div>
+</div>
 </template>
 
 <script setup>
-import axios from "axios";
+import {searchDuel} from "../../utils/socket.js";
 import {useCharacterStore} from "../../stores/characterStore.js";
 import {ref} from "vue";
 
 const characterStore = useCharacterStore()
 
-// const ping = () => {
-//   console.log("ping")
-//   console.log("owner:",characterStore.getOwner)
-//   axios.get('http://localhost:3000/match-ping', {params: {id: characterStore.getOwner}
-//   }).then(res => {
-//     console.log(res)
-//     isSearching.value = res.data.status === true;
-//
-//     if(res.data.status) {
-//       setTimeout(ping, 5000)
-//     }
-//   })
-// }
-//
-// ping()
-
-characterStore.duelPolling()
-
+const report = ref('')
 
 const search = () => {
-  axios.post('http://localhost:3000/search-duel', {id: characterStore.getOwner}).then(res => {
-    console.log(res)
-    characterStore.setIsSearching(true)
+  searchDuel(characterStore.character.id).then(res => {
+    report.value = res.data.log.report
   })
-
 }
 </script>
 
