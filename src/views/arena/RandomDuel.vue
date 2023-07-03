@@ -3,30 +3,24 @@
   <h2>Random duel</h2>
   <button @click="search">search</button>
   <div>
-<!--    <h2>{{report.title}}</h2>-->
-<!--    <p v-for="line in report.intro">{{line}}</p>-->
-<!--    <p v-for="line in report.rounds">{{line}}</p>-->
-<!--    <p v-for="line in report.outro">{{line}}</p>-->
-
-    <p v-for="line in report">{{line}}</p>
+    <p v-if="socketStore.report" v-for="round in socketStore.report.log">{{round}}</p>
   </div>
 </div>
 </template>
 
 <script setup>
-import {searchDuel} from "../../utils/socket.js";
 import {useCharacterStore} from "../../stores/characterStore.js";
-import {ref} from "vue";
+import {useSocketStore} from "../../stores/socketStore.js";
 
 const characterStore = useCharacterStore()
-
-const report = ref('')
+const socketStore = useSocketStore()
 
 const search = () => {
-  searchDuel(characterStore.character.id).then(res => {
-    report.value = res.data.log
-  })
+  socketStore.emit('duel', characterStore.character.id)
 }
+
+
+
 </script>
 
 <style scoped>

@@ -4,6 +4,7 @@ import {computed, ref} from "vue";
 export const useUserStore = defineStore('user', () => {
     const userId = ref('')
     const user = ref({})
+    const usersOnline = ref(0)
 
 
     // const getCharacterId = computed(() => user.value.character)
@@ -26,16 +27,22 @@ export const useUserStore = defineStore('user', () => {
         userId.value = ''
     }
 
+    function setUsersOnline(data) {
+        usersOnline.value = data
+    }
+
 
 
     return {
         user,
         userId,
+        usersOnline,
         // getUser,
         // getCharacterId,
         getId,
         setUser,
         clearUser,
-        setUserId
+        setUserId,
+        setUsersOnline
     }
 }, {persist: {storage: sessionStorage}})

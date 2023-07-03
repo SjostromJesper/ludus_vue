@@ -1,6 +1,7 @@
 <template>
     <div class="app">
       <div class="side" v-if="userStore.userId">
+        <p>users online: {{userStore.usersOnline}}</p>
         <router-link to="/overview">Overview</router-link>
         <router-link to="/random-duel">Duel</router-link>
       </div>
@@ -16,39 +17,32 @@
 </template>
 
 <script setup>
-import {onMounted, ref} from 'vue'
-import {supabase} from './supabase'
 import CharacterWindow from "./components/CharacterWindow.vue";
 import {useRouter} from "vue-router";
 import {useUserStore} from "./stores/userStore.js";
 import {useCharacterStore} from "./stores/characterStore.js";
-
-
-
-
-
-
-const session = ref()
+import {startSocket} from "./utils/socket.js";
+import {useSocketStore} from "./stores/socketStore.js";
 
 const router = useRouter()
 
 const userStore = useUserStore()
 const characterStore = useCharacterStore()
+const socketStore = useSocketStore()
 
-onMounted(() => {
-  supabase.auth.getSession().then(({data}) => session.value = data.session)
-  supabase.auth.onAuthStateChange((_, _session) => {session.value = _session})
-})
+if(userStore.userId) {
+  const socket = startSocket(userStore.userId)
+  socketStore.setSocket(socket)
+}
+
 
 const signOut = async () => {
-  const {error} = await supabase.auth.signOut()
 
-  if(!error) {
     userStore.clearUser()
     characterStore.clearCharacter()
     sessionStorage.clear()
     await router.push('/')
-  }
+
 }
 </script>
 
@@ -68,7 +62,7 @@ const signOut = async () => {
   padding: 8px;
 
   background-color: #2e2e38;
-  width: 200px;
+  min-width: 200px;
   height: 100%;
 }
 </style>

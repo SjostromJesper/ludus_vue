@@ -1,5 +1,8 @@
 import {io} from "socket.io-client";
 import axios from "axios";
+import {useUserStore} from "../stores/userStore.js";
+import {useCharacterStore} from "../stores/characterStore.js";
+import {useSocketStore} from "../stores/socketStore.js";
 
 let socket;
 
@@ -34,17 +37,39 @@ export const searchDuel = async (id) => {
     return await axios.post(url + '/duel', {id: id})
 }
 
-const startSocket = (user) => {
-    socket = io(url, {auth: {
+
+export const startSocket = (user) => {
+    console.log("starting socket")
+    const characterStore = useCharacterStore()
+    const socketStore = useSocketStore()
+
+    const socket = io(url, {auth: {
             token: "abc",
             user: user
         }})
+    // socket.on('connect', () => {
+    //     console.log("io connect")
+    // })
+    //
+    // socket.on('disconnect', () => {
+    //     console.log("io disconnect")
+    // })
+    //
+    // socket.on('users_online', message => {
+    //     const userStore = useUserStore()
+    //     console.log(message)
+    //     userStore.setUsersOnline(message)
+    // })
 
-    socket.on('connect', () => {
-        console.log("io connect")
+    socket.on('CHARACTER_UPDATE', (data) => {
+        console.log("update character happening")
+        characterStore.setCharacter(data.characterData)
     })
 
-    socket.on('disconnect', () => {
-        console.log("io disconnect")
+    socket.on('DUEL_RESULT', (data) => {
+        console.log(data)
+        socketStore.setReport(data)
     })
+
+    return socket
 }
