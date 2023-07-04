@@ -21,7 +21,7 @@ const characterStore = useCharacterStore()
 const socketStore = useSocketStore()
 
 const doThing = () => {
-  socketStore.emit({isData: 'this is text in data'})
+  socketStore.emit('ADD_ITEM', {isData: 'this is text in data'})
 }
 
 </script>

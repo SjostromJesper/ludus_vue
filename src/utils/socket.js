@@ -54,19 +54,32 @@ export const startSocket = (user) => {
     // socket.on('disconnect', () => {
     //     console.log("io disconnect")
     // })
-    //
-    // socket.on('users_online', message => {
-    //     const userStore = useUserStore()
-    //     console.log(message)
-    //     userStore.setUsersOnline(message)
-    // })
+
+    socket.on('USERS_ONLINE', message => {
+        const userStore = useUserStore()
+        userStore.setUsersOnline(message)
+    })
 
     socket.on('CHARACTER_UPDATE', (data) => {
         console.log("update character happening")
+        console.log(data)
+
         characterStore.setCharacter(data.characterData)
     })
 
+    socket.on('GET_EQUIPMENT', (data) => {
+        console.log('GET_EQUIPMENT')
+        console.log(data)
+        characterStore.setEquipment(data)
+    })
+
+    socket.on('GET_INVENTORY', (data) => {
+        console.log('GET INVENTORY')
+        characterStore.setInventory(data)
+    })
+
     socket.on('DUEL_RESULT', (data) => {
+        console.log("DUEL RESULT")
         console.log(data)
         socketStore.setReport(data)
     })

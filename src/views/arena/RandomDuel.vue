@@ -16,7 +16,7 @@ const characterStore = useCharacterStore()
 const socketStore = useSocketStore()
 
 const search = () => {
-  socketStore.emit('duel', characterStore.character.id)
+  socketStore.emit('SEARCH_DUEL', characterStore.character.id)
 }
 
 

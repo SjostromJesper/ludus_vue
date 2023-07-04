@@ -1,69 +1,46 @@
 <template>
   <div class="equipment">
-    <div class="body-slots">
-      <h2>equipment</h2>
-      <div class="main-hand">
-        main hand: {{characterStore.character.main_hand ? characterStore.character.equipment.main_hand.name : 'empty'}}
-        <button v-if="characterStore.character.main_hand" @click="() => unequip('main_hand')">remove</button>
-      </div>
-
-      <div class="offhand">
-        offhand: {{characterStore.character.equipment.off_hand ? characterStore.character.equipment.off_hand : 'empty'}}
-      </div>
-
-      <div class="head">
-        head: {{characterStore.character.head_slot ? characterStore.character.head_slot : 'empty'}}
-      </div>
-
-      <div class="chest">
-        chest: {{characterStore.character.chest_slot ? characterStore.character.chest_slot : 'empty'}}
-      </div>
-
-      <div class="hands">
-        hands: {{characterStore.character.hands_slot ? characterStore.character.hands_slot : 'empty'}}
-      </div>
-
-      <div class="pants">
-        pants: {{characterStore.character.pants_slot ? characterStore.character.pants_slot : 'empty'}}
-      </div>
-
-      <div class="feet">
-        feet: {{characterStore.character.feet_slot ? characterStore.character.feet_slot : 'empty'}}
-      </div>
+    <div class="slots">
+      <template v-for="(slot, key) in characterStore.equipment">
+        <div class="slot" v-if="key !== 'id'">
+          {{ key }}: {{ slot ? slot.item.name : 'empty' }}
+          <button v-if="slot" @click="() => unequip(slot.item.data.slot)">unequip</button>
+        </div>
+      </template>
     </div>
 
     <div class="inventory">
-      <h2>Inventory</h2>
-      <div class="item" v-for="item in characterStore.character.items">
-        <p>{{item.name}}</p>
-        <button class="equip" @click="() => equip(item.data)">equip</button>
-      </div >
+      <template v-for="(item, key) in characterStore.inventory">
+        <div class="item">
+          {{item.item.name}}
+          <button v-if="item.item.data.slot" @click="() => equip(item.item.id)">equip</button>
+        </div>
+      </template>
     </div>
   </div>
 </template>
 
 <script setup>
 import {useCharacterStore} from "../../stores/characterStore.js";
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import {useSocketStore} from "../../stores/socketStore.js";
 
 const characterStore = useCharacterStore()
 const socketStore = useSocketStore()
 
-const datta = ref(characterStore.character.items)
+onMounted(() => {
+  socketStore.emit('GET_EQUIPMENT', "hello")
+  socketStore.emit('GET_INVENTORY', "hello")
 
-const show = () => {
-  socketStore.emit('inventory', "hello")
-}
+})
 
-show()
 
-const equip = (data) => {
-  socketStore.emit("equip", data.id)
+const equip = (itemId) => {
+  socketStore.emit("EQUIP_ITEM", itemId)
 }
 
 const unequip = (slot) => {
-  socketStore.emit("unequip", slot)
+  socketStore.emit('UNEQUIP_ITEM', slot)
 }
 
 
@@ -100,7 +77,7 @@ const unequip = (slot) => {
 }
 
 .equip {
-  background-color: rgba(0,0,0,0);
+  background-color: rgba(0, 0, 0, 0);
   transition: none;
 
   cursor: pointer;
