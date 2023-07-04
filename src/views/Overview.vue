@@ -1,7 +1,7 @@
 <template>
   <div class="overview">
 
-    <div class="socket-error">no ws available!</div>
+    <div class="socket-error" v-if="!socketStore.socket">no ws available!</div>
     <div v-if="!characterStore.character">
       <CharacterCreator/>
     </div>
