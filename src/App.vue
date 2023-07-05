@@ -21,7 +21,6 @@ import CharacterWindow from "./components/CharacterWindow.vue";
 import {useRouter} from "vue-router";
 import {useUserStore} from "./stores/userStore.js";
 import {useCharacterStore} from "./stores/characterStore.js";
-import {startSocket} from "./utils/socket.js";
 import {useSocketStore} from "./stores/socketStore.js";
 
 const router = useRouter()
@@ -31,7 +30,7 @@ const characterStore = useCharacterStore()
 const socketStore = useSocketStore()
 
 if(userStore.userId) {
-  startSocket(userStore.userId)
+  socketStore.startSocket(userStore.userId)
 }
 
 

@@ -23,16 +23,22 @@ export const useSocketStore = defineStore('socket', () => {
         })
     }
 
-    const startSocket = (user) => {
-        if(socket.value) return
-        console.log("starting socket")
+    const startSocket = () => {
+        const userStore = useUserStore()
         const characterStore = useCharacterStore()
-        const socketStore = useSocketStore()
+
+        if(socket.value) return
+        console.log("socket value", socket.value)
+        if(!userStore.userId) return
+
+
+        console.log("starting socket")
+
 
         const websocket = io(import.meta.env.VITE_SERVER_URL, {
             auth: {
                 token: "abc",
-                user: user
+                user: userStore.userId
             }})
 
         websocket.on('USERS_ONLINE', message => {
@@ -61,11 +67,13 @@ export const useSocketStore = defineStore('socket', () => {
         websocket.on('DUEL_RESULT', (data) => {
             console.log("DUEL RESULT")
             console.log(data)
-            socketStore.setReport(data)
+            setReport(data)
         })
 
         socket.value = websocket
     }
+
+    startSocket()
 
     return {
         socket,
