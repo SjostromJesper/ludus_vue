@@ -37,8 +37,7 @@ const signIn = async () => {
   userStore.setUserId(data.userData.id)
   characterStore.setCharacter(data.characterData)
   if(userStore.userId) {
-    const socket = startSocket(userStore.userId)
-    socketStore.setSocket(socket)
+    socketStore.startSocket(userStore.userId)
   }
   await router.push('/overview')
 }

@@ -31,8 +31,7 @@ const characterStore = useCharacterStore()
 const socketStore = useSocketStore()
 
 if(userStore.userId) {
-  const socket = startSocket(userStore.userId)
-  socketStore.setSocket(socket)
+  startSocket(userStore.userId)
 }
 
 

@@ -16,7 +16,6 @@ export const sendMessage = () => {
 
 export const auth = async (username, password) => {
     return await axios.post(url + '/login', {username: username, password: password}).then(res => {
-        startSocket(res.data.userData.id)
         return res.data
     })
 }
