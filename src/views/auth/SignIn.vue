@@ -19,14 +19,16 @@ import {useUserStore} from "../../stores/userStore.js"
 
 const userStore = useUserStore()
 const characterStore = useCharacterStore()
+const socketStore = useSocketStore()
 
 const router = useRouter()
 
 const email = ref('')
 const password = ref('')
 
-import {auth} from "../../utils/socket.js";
+import {auth, startSocket} from "../../utils/socket.js";
 import {useCharacterStore} from "../../stores/characterStore.js";
+import {useSocketStore} from "../../stores/socketStore.js";
 
 const signIn = async () => {
   const data = await auth(email.value, password.value)
@@ -34,6 +36,10 @@ const signIn = async () => {
   userStore.setUser(data.userData)
   userStore.setUserId(data.userData.id)
   characterStore.setCharacter(data.characterData)
+  if(userStore.userId) {
+    const socket = startSocket(userStore.userId)
+    socketStore.setSocket(socket)
+  }
   await router.push('/overview')
 }
 
