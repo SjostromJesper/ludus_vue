@@ -29,9 +29,7 @@ const characterStore = useCharacterStore()
 const socketStore = useSocketStore()
 
 onMounted(() => {
-  socketStore.emit('GET_EQUIPMENT', "hello")
   socketStore.emit('GET_INVENTORY', "hello")
-
 })
 
 

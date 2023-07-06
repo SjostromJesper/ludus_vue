@@ -4,15 +4,7 @@ import {useUserStore} from "../stores/userStore.js";
 import {useCharacterStore} from "../stores/characterStore.js";
 import {useSocketStore} from "../stores/socketStore.js";
 
-let socket;
-
 const url = import.meta.env.VITE_SERVER_URL
-
-
-export const sendMessage = () => {
-    console.log("emitting")
-    socket.emit('chat message', "häst")
-}
 
 export const auth = async (username, password) => {
     return await axios.post(url + '/login', {username: username, password: password}).then(res => {
@@ -30,58 +22,4 @@ export const register = async (email, password, username) => {
 
 export const createCharacter = async (characterData, userId) => {
     return await axios.post(url + '/create-character', {characterData, userId})
-}
-
-export const searchDuel = async (id) => {
-    return await axios.post(url + '/duel', {id: id})
-}
-
-
-export const startSocket = (user) => {
-    console.log("starting socket")
-    const characterStore = useCharacterStore()
-    const socketStore = useSocketStore()
-
-    const socket = io(url, {auth: {
-            token: "abc",
-            user: user
-        }})
-    // socket.on('connect', () => {
-    //     console.log("io connect")
-    // })
-    //
-    // socket.on('disconnect', () => {
-    //     console.log("io disconnect")
-    // })
-
-    socket.on('USERS_ONLINE', message => {
-        const userStore = useUserStore()
-        userStore.setUsersOnline(message)
-    })
-
-    socket.on('CHARACTER_UPDATE', (data) => {
-        console.log("update character happening")
-        console.log(data)
-
-        characterStore.setCharacter(data.characterData)
-    })
-
-    socket.on('GET_EQUIPMENT', (data) => {
-        console.log('GET_EQUIPMENT')
-        console.log(data)
-        characterStore.setEquipment(data)
-    })
-
-    socket.on('GET_INVENTORY', (data) => {
-        console.log('GET INVENTORY')
-        characterStore.setInventory(data)
-    })
-
-    socket.on('DUEL_RESULT', (data) => {
-        console.log("DUEL RESULT")
-        console.log(data)
-        socketStore.setReport(data)
-    })
-
-    return socket
 }

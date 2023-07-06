@@ -53,15 +53,10 @@ export const useSocketStore = defineStore('socket', () => {
             characterStore.setCharacter(data.characterData)
         })
 
-        websocket.on('GET_EQUIPMENT', (data) => {
-            console.log('GET_EQUIPMENT')
-            console.log(data)
-            characterStore.setEquipment(data)
-        })
-
         websocket.on('GET_INVENTORY', (data) => {
             console.log('GET INVENTORY')
-            characterStore.setInventory(data)
+            characterStore.setInventory(data.inventory)
+            characterStore.setEquipment(data.equipment)
         })
 
         websocket.on('DUEL_RESULT', (data) => {

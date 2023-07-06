@@ -4,6 +4,7 @@
         <p>users online: {{userStore.usersOnline}}</p>
         <router-link to="/overview">Overview</router-link>
         <router-link to="/random-duel">Duel</router-link>
+        <router-link to="/shop">Shop</router-link>
       </div>
 
       <RouterView />

@@ -15,6 +15,9 @@
 <script setup>
 import {ref} from "vue"
 import {useRouter} from "vue-router"
+import {auth} from "../../utils/socket.js"
+import {useCharacterStore} from "../../stores/characterStore.js"
+import {useSocketStore} from "../../stores/socketStore.js"
 import {useUserStore} from "../../stores/userStore.js"
 
 const userStore = useUserStore()
@@ -26,9 +29,7 @@ const router = useRouter()
 const email = ref('')
 const password = ref('')
 
-import {auth, startSocket} from "../../utils/socket.js";
-import {useCharacterStore} from "../../stores/characterStore.js";
-import {useSocketStore} from "../../stores/socketStore.js";
+
 
 const signIn = async () => {
   const data = await auth(email.value, password.value)
@@ -41,8 +42,6 @@ const signIn = async () => {
   }
   await router.push('/overview')
 }
-
-
 </script>
 
 <style scoped>
@@ -54,8 +53,6 @@ const signIn = async () => {
 
   width: 100%;
   height: 100%;
-
-
 }
 
 .sign-in {
