@@ -7,11 +7,13 @@ import {useUserStore} from "../stores/userStore.js";
 import Equipment from "../views/character/Equipment.vue";
 import RandomDuel from "../views/arena/RandomDuel.vue";
 import Shop from "../views/shops/Shop.vue";
+import BeastDuel from "../views/arena/BeastDuel.vue";
 
 const routes = [
     {path: '/overview', name: 'Overview', component: Overview, meta: {requiresAuth: true}},
     {path: '/equipment', name: 'Equipment', component: Equipment, meta: {requiresAuth: true}},
     {path: '/random-duel', name: 'RandomDuel', component: RandomDuel, meta: {requiresAuth: true}},
+    {path: '/beast-duel', name: 'BeastDuel', component: BeastDuel, meta: {requiresAuth: true}},
     {path: '/shop', name: 'Shop', component: Shop, meta: {requiresAuth: true}},
     {path: '/', name: 'SignIn', component: SignIn, meta: {requiresAuth: false}},
     {path: '/sign-up', name: 'SignUp', component: SignUp, meta: {requiresAuth: false}},

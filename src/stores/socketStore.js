@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import {computed, ref} from "vue";
+import {ref} from "vue";
 import {useCharacterStore} from "./characterStore.js";
 import {io} from "socket.io-client";
 import {useUserStore} from "./userStore.js";

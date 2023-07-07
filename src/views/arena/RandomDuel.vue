@@ -17,9 +17,9 @@
       </select>
     </div>
     <button @click="search">search</button>
-    <p v-if="errorMessage">{{errorMessage}}</p>
-    <div>
+    <p v-if="errorMessage">{{ errorMessage }}</p>
 
+    <div>
       <p v-if="socketStore.report" v-for="round in socketStore.report.log">{{ round }}</p>
     </div>
   </div>
