@@ -1,5 +1,5 @@
 <template>
-  <div class="random-duel">
+  <Layout title="Random Duel" class="random-duel">
     <h2>Random duel</h2>
     <div class="tactics">
       surrender at:
@@ -22,13 +22,14 @@
     <div>
       <p v-if="socketStore.report" v-for="round in socketStore.report.log">{{ round }}</p>
     </div>
-  </div>
+  </Layout>
 </template>
 
 <script setup>
 import {useCharacterStore} from "../../stores/characterStore.js";
 import {useSocketStore} from "../../stores/socketStore.js";
 import {ref} from "vue";
+import Layout from "../Layout.vue";
 
 const characterStore = useCharacterStore()
 const socketStore = useSocketStore()

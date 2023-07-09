@@ -1,20 +1,30 @@
 <template>
   <div class="equipment">
-    <div class="slots">
-      <template v-for="(slot, key) in characterStore.equipment">
-        <div class="slot" v-if="key !== 'id'">
-          {{ key }}: {{ slot ? slot.item.name : 'empty' }}
-          <button v-if="slot" @click="() => unequip(slot.item.data.slot)">unequip</button>
-        </div>
-      </template>
+    <div class="upper">
+      <div class="slots">
+        <template v-for="(slot, key) in characterStore.equipment">
+          <div class="slot" v-if="key !== 'id'">
+            {{ key }}: {{ slot ? slot.item.name : 'empty' }}
+            <button v-if="slot" @click="() => unequip(slot.item.data.slot)">unequip</button>
+          </div>
+        </template>
+      </div>
+
+      <div class="stats">
+        <p>{{characterStore.character.strength}}</p>
+        <p>{{characterStore.character.dexterity}}</p>
+        <p>{{characterStore.character.sword}}</p>
+        <p>{{characterStore.character.axe}}</p>
+        <p>{{characterStore.character.club}}</p>
+      </div>
     </div>
+
 
     <div class="inventory">
       <template v-for="(item, key) in characterStore.inventory">
-        <div class="item">
-          {{item.item.name}}
+        <Item :item="item.item.data">
           <button v-if="item.item.data.slot" @click="() => equip(item.item.id)">equip</button>
-        </div>
+        </Item>
       </template>
     </div>
   </div>
@@ -24,6 +34,7 @@
 import {useCharacterStore} from "../../stores/characterStore.js";
 import {onMounted, ref} from "vue";
 import {useSocketStore} from "../../stores/socketStore.js";
+import Item from "../../components/Item.vue";
 
 const characterStore = useCharacterStore()
 const socketStore = useSocketStore()
@@ -45,13 +56,28 @@ const unequip = (slot) => {
 </script>
 
 <style scoped>
+p {
+  margin: 0;
+}
+
 .equipment {
   width: 100%;
   display: flex;
-  flex-direction: row;
-  justify-content: space-around;
+  flex-direction: column;
   padding: 20px;
 }
+
+.upper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.stats {
+  display: flex;
+  flex-direction: column;
+}
+
 
 .body-slots {
   padding: 8px;

@@ -1,22 +1,23 @@
 <template>
-  <div class="overview">
+  <Layout title="Overview" class="overview">
 
     <div class="socket-error" v-if="!socketStore.socket">no ws available!</div>
     <div v-if="!characterStore.character">
       <CharacterCreator/>
     </div>
     <div v-else>
-      <button @click="doThing">get item!</button>
+      lets add news here later
     </div>
 
 
-  </div>
+  </Layout>
 </template>
 
 <script setup>
 import CharacterCreator from "../components/CharacterCreator.vue";
 import {useCharacterStore} from "../stores/characterStore.js";
 import {useSocketStore} from "../stores/socketStore.js";
+import Layout from "./Layout.vue";
 
 const characterStore = useCharacterStore()
 const socketStore = useSocketStore()
@@ -33,8 +34,6 @@ const doThing = () => {
   display: flex;
   flex-direction: column;
   align-items: center;
-
-
 }
 
 .socket-error {

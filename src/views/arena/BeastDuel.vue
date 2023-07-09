@@ -1,5 +1,5 @@
 <template>
-<div class="beast-duel">
+<Layout title="Beasts" class="beast-duel">
   <h2>Beast duel</h2>
 
   <div class="tactics">
@@ -24,13 +24,14 @@
   <div>
     <p v-if="report" v-for="round in report">{{ round }}</p>
   </div>
-</div>
+</Layout>
 </template>
 
 <script setup>
 import {ref} from "vue";
 import {useCharacterStore} from "../../stores/characterStore.js";
 import {useSocketStore} from "../../stores/socketStore.js";
+import Layout from "../Layout.vue";
 
 const characterStore = useCharacterStore()
 const socketStore = useSocketStore()
