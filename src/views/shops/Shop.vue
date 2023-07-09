@@ -1,5 +1,5 @@
 <template>
-  <Layout title="Shop">
+  <div >
     <div class="shop">
       <h2>Shop</h2>
       <table>
@@ -29,7 +29,7 @@
         </tbody>
       </table>
     </div>
-  </Layout>
+  </div>
 </template>
 
 <script setup>

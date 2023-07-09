@@ -11,12 +11,12 @@ import BeastDuel from "../views/arena/BeastDuel.vue";
 
 const routes = [
     {path: '/overview', name: 'Overview', component: Overview, meta: {requiresAuth: true}},
-    {path: '/equipment', name: 'Equipment', component: Equipment, meta: {requiresAuth: true}},
-    {path: '/random-duel', name: 'RandomDuel', component: RandomDuel, meta: {requiresAuth: true}},
-    {path: '/beast-duel', name: 'BeastDuel', component: BeastDuel, meta: {requiresAuth: true}},
+    {path: '/equipment', name: 'Inventory', component: Equipment, meta: {requiresAuth: true}},
+    {path: '/random-duel', name: 'Random Duel', component: RandomDuel, meta: {requiresAuth: true}},
+    {path: '/beast-duel', name: 'Beasts', component: BeastDuel, meta: {requiresAuth: true}},
     {path: '/shop', name: 'Shop', component: Shop, meta: {requiresAuth: true}},
-    {path: '/', name: 'SignIn', component: SignIn, meta: {requiresAuth: false}},
-    {path: '/sign-up', name: 'SignUp', component: SignUp, meta: {requiresAuth: false}},
+    {path: '/', name: 'Sign In', component: SignIn, meta: {requiresAuth: false}},
+    {path: '/sign-up', name: 'Sign Up', component: SignUp, meta: {requiresAuth: false}},
 ]
 
 export const router = createRouter({

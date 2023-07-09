@@ -1,20 +1,25 @@
 <template>
-  <Layout title="Random Duel" class="random-duel">
+  <div class="random-duel">
     <h2>Random duel</h2>
     <div class="tactics">
-      surrender at:
-      <select v-model="percent">
-        <option value="40">40%</option>
-        <option value="30">30%</option>
-        <option value="20">20%</option>
-      </select>
+      <label>
+        Surrender at:
+        <select v-model="percent">
+          <option value="40">40%</option>
+          <option value="30">30%</option>
+          <option value="20">20%</option>
+        </select>
+      </label>
 
-      tactic:
-      <select v-model="tactic">
-        <option value="0">normal</option>
-        <option value="1">defensive</option>
-        <option value="2">aggressive</option>
-      </select>
+      <label>
+        Tactic:
+        <select v-model="tactic">
+          <option value="0">normal</option>
+          <option value="1">defensive</option>
+          <option value="2">aggressive</option>
+        </select>
+      </label>
+
     </div>
     <button @click="search">search</button>
     <p v-if="errorMessage">{{ errorMessage }}</p>
@@ -22,7 +27,7 @@
     <div>
       <p v-if="socketStore.report" v-for="round in socketStore.report.log">{{ round }}</p>
     </div>
-  </Layout>
+  </div>
 </template>
 
 <script setup>
@@ -57,5 +62,9 @@ socketStore.socket.on('SEARCH_DUEL_ERROR', message => {
 </script>
 
 <style scoped>
-
+.tactics {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
 </style>

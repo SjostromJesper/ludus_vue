@@ -26,6 +26,8 @@ const props = defineProps({
   background-color: #F8EFE0;
   padding: 80px 20px 0 20px;
   border-top: 2px solid black;
+
+  overflow-y: auto;
 }
 
 .header {

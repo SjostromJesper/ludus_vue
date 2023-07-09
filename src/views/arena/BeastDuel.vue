@@ -1,30 +1,35 @@
 <template>
-<Layout title="Beasts" class="beast-duel">
-  <h2>Beast duel</h2>
+  <div class="beast-duel">
+    <h2>Beast duel</h2>
 
-  <div class="tactics">
-    surrender at:
-    <select v-model="percent">
-      <option value="40">40%</option>
-      <option value="30">30%</option>
-      <option value="20">20%</option>
-    </select>
+    <div class="tactics">
+      <label>
+        Surrender at:
+        <select v-model="percent">
+          <option value="40">40%</option>
+          <option value="30">30%</option>
+          <option value="20">20%</option>
+        </select>
+      </label>
 
-    tactic:
-    <select v-model="tactic">
-      <option value="0">normal</option>
-      <option value="1">defensive</option>
-      <option value="2">aggressive</option>
-    </select>
+      <label>
+        Tactic:
+        <select v-model="tactic">
+          <option value="0">normal</option>
+          <option value="1">defensive</option>
+          <option value="2">aggressive</option>
+        </select>
+      </label>
+    </div>
+
+    <button @click="search">search</button>
+    <p v-if="errorMessage">{{ errorMessage }}</p>
+
+
+    <div>
+      <p v-if="report" v-for="round in report">{{ round }}</p>
+    </div>
   </div>
-  <button @click="search">search</button>
-  <p v-if="errorMessage">{{ errorMessage }}</p>
-
-
-  <div>
-    <p v-if="report" v-for="round in report">{{ round }}</p>
-  </div>
-</Layout>
 </template>
 
 <script setup>
@@ -63,5 +68,9 @@ socketStore.socket.on('DUEL_BEAST_RESULT', message => {
 </script>
 
 <style scoped>
-
+.tactics {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
 </style>

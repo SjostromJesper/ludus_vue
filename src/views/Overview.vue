@@ -1,5 +1,5 @@
 <template>
-  <Layout title="Overview" class="overview">
+  <div class="overview">
 
     <div class="socket-error" v-if="!socketStore.socket">no ws available!</div>
     <div v-if="!characterStore.character">
@@ -10,32 +10,21 @@
     </div>
 
 
-  </Layout>
+  </div>
 </template>
 
 <script setup>
 import CharacterCreator from "../components/CharacterCreator.vue";
 import {useCharacterStore} from "../stores/characterStore.js";
 import {useSocketStore} from "../stores/socketStore.js";
-import Layout from "./Layout.vue";
 
 const characterStore = useCharacterStore()
 const socketStore = useSocketStore()
 
-const doThing = () => {
-  socketStore.emit('GET_INVENTORY', {isData: 'this is text in data'})
-}
 
 </script>
 
 <style scoped>
-.overview {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
 .socket-error {
   background-color: lightcoral;
   width: 90%;

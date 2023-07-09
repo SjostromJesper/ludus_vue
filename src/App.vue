@@ -7,7 +7,10 @@
         <router-link to="/shop">Shop</router-link>
       </Side>
 
+      <Layout :title="router.currentRoute.value.name">
+
       <RouterView class="main"/>
+      </Layout>
 
       <Side title="Information" v-if="userStore.userId">
         <CharacterWindow/>
@@ -24,6 +27,8 @@ import {useUserStore} from "./stores/userStore.js";
 import {useCharacterStore} from "./stores/characterStore.js";
 import {useSocketStore} from "./stores/socketStore.js";
 import Side from "./components/Side.vue";
+import Layout from "./views/Layout.vue";
+import {onMounted} from "vue";
 
 const router = useRouter()
 
@@ -34,6 +39,8 @@ const socketStore = useSocketStore()
 if(userStore.userId) {
   socketStore.startSocket(userStore.userId)
 }
+
+
 
 const signOut = async () => {
 
@@ -55,10 +62,6 @@ const signOut = async () => {
   height: 100%;
 
   overflow-y: hidden;
-}
-
-.main {
-  overflow-y: auto;
 }
 </style>
 

@@ -1,6 +1,9 @@
 <template>
   <div class="equipment">
+    <h2>Equipment</h2>
+    <br>
     <div class="upper">
+
       <div class="slots">
         <template v-for="(slot, key) in characterStore.equipment">
           <div class="slot" v-if="key !== 'id'">
@@ -11,28 +14,58 @@
       </div>
 
       <div class="stats">
-        <p>{{characterStore.character.strength}}</p>
-        <p>{{characterStore.character.dexterity}}</p>
-        <p>{{characterStore.character.sword}}</p>
-        <p>{{characterStore.character.axe}}</p>
-        <p>{{characterStore.character.club}}</p>
+        <p><span>strength: </span>{{ characterStore.character.strength }}</p>
+        <p><span>dexterity: </span>{{ characterStore.character.dexterity }}</p>
+        <p><span>sword: </span>{{ characterStore.character.sword }}</p>
+        <p><span>axe: </span>{{ characterStore.character.axe }}</p>
+        <p><span>club: </span>{{ characterStore.character.club }}</p>
       </div>
     </div>
 
+    <br>
+    <hr>
+    <br>
 
     <div class="inventory">
-      <template v-for="(item, key) in characterStore.inventory">
-        <Item :item="item.item.data">
-          <button v-if="item.item.data.slot" @click="() => equip(item.item.id)">equip</button>
-        </Item>
-      </template>
+      <h2>Inventory</h2>
+      <br>
+      <div class="items">
+
+
+          <div class="weapons col">
+            <h3>Weapons</h3>
+            <br>
+            <Item :item="item.item.data" v-for="item in characterStore.inventory">
+              <button v-if="item.item.data.slot" @click="() => equip(item.item.id)">equip</button>
+            </Item>
+
+            <br>
+            <h3>Armors</h3>
+            <br>
+<!--            <Item :item="item.item.data" v-for="item in armors">-->
+<!--              <button v-if="item.item.data.slot" @click="() => equip(item.item.id)">equip</button>-->
+<!--            </Item>-->
+<!--            <p v-if="armors.length < 1">Nothing here</p>-->
+          </div>
+
+
+          <div class="other col">
+            <h3>Other</h3>
+            <br>
+<!--            <Item :item="item.item.data" v-for="item in other">-->
+<!--              <button v-if="item.item.data.slot" @click="() => equip(item.item.id)">equip</button>-->
+<!--            </Item>-->
+<!--            <p v-if="other.length < 1">Nothing here</p>-->
+          </div>
+
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
 import {useCharacterStore} from "../../stores/characterStore.js";
-import {onMounted, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import {useSocketStore} from "../../stores/socketStore.js";
 import Item from "../../components/Item.vue";
 
@@ -79,35 +112,23 @@ p {
 }
 
 
-.body-slots {
-  padding: 8px;
-}
-
 .inventory {
   padding: 8px;
   border-radius: 8px;
 
   display: flex;
   flex-direction: column;
+  flex: 1 1 0;
 }
 
-.item {
+.items {
   display: flex;
   flex-direction: row;
-  gap: 15px;
-
-  border-radius: 25px;
-  padding: 18px;
+  justify-content: space-evenly;
 }
 
-.equip {
-  background-color: rgba(0, 0, 0, 0);
-  transition: none;
-
-  cursor: pointer;
-}
-
-.equip:hover {
-  border: none;
+.col {
+  display: flex;
+  flex-direction: column;
 }
 </style>

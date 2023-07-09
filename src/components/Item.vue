@@ -1,6 +1,5 @@
 <template>
 <div class="item">
-  <img :src="icon" alt="">
   {{item.name}}
   <slot/>
 </div>
@@ -15,13 +14,19 @@ const props = defineProps({
   }
 })
 
-const icon = `../assets/sword.png`
 
 </script>
 
 <style scoped>
 .item {
-  border: 1px solid greenyellow;
-  width: 400px;
+  width: 275px;
+
+  border-bottom: 1px solid black;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  font-size: 0.85rem;
 }
 </style>
