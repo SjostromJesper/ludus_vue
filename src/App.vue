@@ -5,6 +5,8 @@
         <router-link to="/random-duel">Duel</router-link>
         <router-link to="/beast-duel">Beasts</router-link>
         <router-link to="/shop">Shop</router-link>
+        <router-link to="/ladder">Ladder</router-link>
+        <router-link to="/tavern">Tavern</router-link>
       </Side>
 
       <Layout :title="router.currentRoute.value.name">

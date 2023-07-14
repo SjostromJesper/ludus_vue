@@ -1,19 +1,21 @@
 <template>
   <div class="equipment">
-    <h2>Equipment</h2>
-    <br>
     <div class="upper">
+      <div class="slots" v-if="characterStore.equipment">
+        <h2>Equipment</h2>
+        <div class="slot" v-for="(slot, key) in characterStore.equipment">
+          <template v-if="slot">
+            <p> {{ key.replace('_', ' ') }}: {{ slot.item.name }}</p>
+            <Button text="unequip" @click="() => unequip(slot.equipped)"/>
+          </template>
 
-      <div class="slots">
-        <template v-for="(slot, key) in characterStore.equipment">
-          <div class="slot" v-if="key !== 'id'">
-            {{ key }}: {{ slot ? slot.item.name : 'empty' }}
-            <button v-if="slot" @click="() => unequip(slot.item.data.slot)">unequip</button>
-          </div>
-        </template>
+          <p v-else>{{ key.replace('_', ' ') }}: empty</p>
+
+        </div>
       </div>
 
       <div class="stats">
+        <h2>Stats</h2>
         <p><span>strength: </span>{{ characterStore.character.strength }}</p>
         <p><span>dexterity: </span>{{ characterStore.character.dexterity }}</p>
         <p><span>sword: </span>{{ characterStore.character.sword }}</p>
@@ -28,37 +30,16 @@
 
     <div class="inventory">
       <h2>Inventory</h2>
-      <br>
-      <div class="items">
+      <template v-for="item in characterStore.inventory">
+        <div class="items">
+          <Item :item="item.item">
+            <Button text="equip main hand" @click="() => equip(item, 'main_hand')"/>
+            <Button text="equip offhand" v-if="item.slot === 'one_hand' || item.slot === 'offhand'"
+                    @click="() => equip(item, 'offhand')"/>
+          </Item>
+        </div>
 
-
-          <div class="weapons col">
-            <h3>Weapons</h3>
-            <br>
-            <Item :item="item.item.data" v-for="item in characterStore.inventory">
-              <button v-if="item.item.data.slot" @click="() => equip(item.item.id)">equip</button>
-            </Item>
-
-            <br>
-            <h3>Armors</h3>
-            <br>
-<!--            <Item :item="item.item.data" v-for="item in armors">-->
-<!--              <button v-if="item.item.data.slot" @click="() => equip(item.item.id)">equip</button>-->
-<!--            </Item>-->
-<!--            <p v-if="armors.length < 1">Nothing here</p>-->
-          </div>
-
-
-          <div class="other col">
-            <h3>Other</h3>
-            <br>
-<!--            <Item :item="item.item.data" v-for="item in other">-->
-<!--              <button v-if="item.item.data.slot" @click="() => equip(item.item.id)">equip</button>-->
-<!--            </Item>-->
-<!--            <p v-if="other.length < 1">Nothing here</p>-->
-          </div>
-
-      </div>
+      </template>
     </div>
   </div>
 </template>
@@ -68,6 +49,7 @@ import {useCharacterStore} from "../../stores/characterStore.js";
 import {computed, onMounted, ref} from "vue";
 import {useSocketStore} from "../../stores/socketStore.js";
 import Item from "../../components/Item.vue";
+import Button from "../../components/Button.vue";
 
 const characterStore = useCharacterStore()
 const socketStore = useSocketStore()
@@ -77,8 +59,33 @@ onMounted(() => {
 })
 
 
-const equip = (itemId) => {
-  socketStore.emit("EQUIP_ITEM", itemId)
+const equip = (item, slot) => {
+  console.log(item.slot)
+  console.log(slot)
+
+  const oldItems = []
+  const newItem = {
+    item: item,
+    slot: slot
+  }
+  if (item.slot === 'two_hand') {
+    // get both offhand and main hand weapons
+    console.log("equipping a two handed weapon")
+    oldItems.push(characterStore.equipment.main_hand)
+    oldItems.push(characterStore.equipment.offhand)
+  } else if (slot === 'offhand') {
+    // get two-handed weapon when equipping offhand
+    if (characterStore.equipment.main_hand.slot === 'two_hand') {
+      oldItems.push(characterStore.equipment.main_hand)
+    }
+  } else {
+    // get one item from the same slot
+    if (characterStore.equipment[slot]) {
+      oldItems.push(characterStore.equipment[slot])
+    }
+  }
+
+  socketStore.emit("EQUIP_ITEM", {newItem, oldItems})
 }
 
 const unequip = (slot) => {

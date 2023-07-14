@@ -43,11 +43,11 @@ const items = ref([])
 
 socketStore.socket.emit('GET_ITEMS')
 socketStore.socket.on('GET_ITEMS', message => {
-  console.log(message)
   items.value = message
 })
 
 socketStore.socket.on('BUY_ITEM', message => {
+  // TODO: add a notification to show user if you succeeded in buying an item
   console.log(message)
 })
 

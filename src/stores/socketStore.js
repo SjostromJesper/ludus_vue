@@ -6,11 +6,7 @@ import {useUserStore} from "./userStore.js";
 
 export const useSocketStore = defineStore('socket', () => {
     const socket = ref()
-    const report = ref()
 
-    function setReport(data) {
-        report.value = data
-    }
 
     function emit(action, data) {
         console.log("emit in socketstore!")
@@ -18,9 +14,12 @@ export const useSocketStore = defineStore('socket', () => {
     }
 
     function on(listener) {
+        let temp = null
         socket.value.on(listener, async data => {
-            report.value = data
+            temp = data
         })
+
+        return temp
     }
 
     const startSocket = () => {
@@ -55,14 +54,25 @@ export const useSocketStore = defineStore('socket', () => {
 
         websocket.on('GET_INVENTORY', (data) => {
             console.log('GET INVENTORY')
-            characterStore.setInventory(data.inventory)
-            characterStore.setEquipment(data.equipment)
+
+
+            const equippedItems = {}
+            const inventoryItems = []
+
+            data.inventory.forEach(item => {
+                if(item.equipped) {
+                    equippedItems[item.equipped] = item
+                }
+                else {inventoryItems.push(item)}
+            })
+
+            characterStore.setInventory(inventoryItems)
+            characterStore.setEquipment(equippedItems)
         })
 
         websocket.on('DUEL_RESULT', (data) => {
             console.log("DUEL RESULT")
             console.log(data)
-            setReport(data)
         })
 
         socket.value = websocket
@@ -72,8 +82,6 @@ export const useSocketStore = defineStore('socket', () => {
 
     return {
         socket,
-        report,
-        setReport,
         startSocket,
         emit,
         on
