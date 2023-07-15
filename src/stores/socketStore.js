@@ -52,23 +52,23 @@ export const useSocketStore = defineStore('socket', () => {
             characterStore.setCharacter(data.characterData)
         })
 
-        websocket.on('GET_INVENTORY', (data) => {
-            console.log('GET INVENTORY')
-
-
-            const equippedItems = {}
-            const inventoryItems = []
-
-            data.inventory.forEach(item => {
-                if(item.equipped) {
-                    equippedItems[item.equipped] = item
-                }
-                else {inventoryItems.push(item)}
-            })
-
-            characterStore.setInventory(inventoryItems)
-            characterStore.setEquipment(equippedItems)
-        })
+        // websocket.on('GET_INVENTORY', (data) => {
+        //     console.log('GET INVENTORY')
+        //
+        //
+        //     const equippedItems = {}
+        //     const inventoryItems = []
+        //
+        //     data.inventory.forEach(item => {
+        //         if(item.equipped) {
+        //             equippedItems[item.equipped] = item
+        //         }
+        //         else {inventoryItems.push(item)}
+        //     })
+        //
+        //     characterStore.setInventory(inventoryItems)
+        //     characterStore.setEquipment(equippedItems)
+        // })
 
         websocket.on('DUEL_RESULT', (data) => {
             console.log("DUEL RESULT")

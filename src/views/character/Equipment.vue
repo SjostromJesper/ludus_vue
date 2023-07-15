@@ -1,5 +1,6 @@
 <template>
   <div class="equipment">
+    <pre>{{processing}}</pre>
     <div class="upper">
       <div class="slots" v-if="characterStore.equipment">
         <h2>Equipment</h2>
@@ -54,12 +55,20 @@ import Button from "../../components/Button.vue";
 const characterStore = useCharacterStore()
 const socketStore = useSocketStore()
 
+const processing = ref(false)
+
 onMounted(() => {
   socketStore.emit('GET_INVENTORY', "hello")
 })
 
 
 const equip = (item, slot) => {
+  if (processing.value) {
+    console.log("processing latest request")
+    return
+  }
+  processing.value = true
+
   console.log(item.slot)
   console.log(slot)
 
@@ -85,12 +94,40 @@ const equip = (item, slot) => {
     }
   }
 
-  socketStore.emit("EQUIP_ITEM", {newItem, oldItems})
+  socketStore.socket.emit("EQUIP_ITEM", {newItem, oldItems})
 }
 
 const unequip = (slot) => {
+  if (processing.value) {
+    console.log("processing latest request")
+    return
+  }
+
+  processing.value = true
   socketStore.emit('UNEQUIP_ITEM', slot)
 }
+
+socketStore.socket.on('GET_INVENTORY', (data) => {
+  console.log('GETTING INVENTORY')
+
+
+  const equippedItems = {}
+  const inventoryItems = []
+
+  data.inventory.forEach(item => {
+    if (item.equipped) {
+      equippedItems[item.equipped] = item
+    } else {
+      inventoryItems.push(item)
+    }
+  })
+
+  characterStore.setInventory(inventoryItems)
+  characterStore.setEquipment(equippedItems)
+
+  console.log("processing complete")
+  processing.value = false
+})
 
 
 </script>
