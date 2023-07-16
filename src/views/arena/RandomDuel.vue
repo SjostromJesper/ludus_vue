@@ -21,7 +21,8 @@
       </label>
 
     </div>
-    <button @click="search">search</button>
+    <button @click="cancelSearch" v-if="isSearching">cancel</button>
+    <button @click="search" v-else>search</button>
     <p v-if="errorMessage">{{ errorMessage }}</p>
 
     <div>
@@ -41,11 +42,14 @@ const socketStore = useSocketStore()
 
 const percent = ref(30)
 const tactic = ref(0)
+
+const isSearching = ref(false)
 const errorMessage = ref('')
 
 const search = () => {
   errorMessage.value = ''
-  socketStore.emit('SEARCH_DUEL', {
+  isSearching.value = true
+  socketStore.socket.emit('SEARCH_DUEL', {
     id: characterStore.character.id,
     settings: {
       percent: percent.value,
@@ -57,6 +61,14 @@ const search = () => {
 socketStore.socket.on('SEARCH_DUEL_ERROR', message => {
   errorMessage.value = message
 })
+
+const cancelSearch = () => {
+  isSearching.value = false
+
+  socketStore.socket.emit('LEAVE_QUEUE', {
+    id: characterStore.character.id
+  })
+}
 
 
 </script>

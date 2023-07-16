@@ -1,6 +1,5 @@
 <template>
   <div class="equipment">
-    <pre>{{processing}}</pre>
     <div class="upper">
       <div class="slots" v-if="characterStore.equipment">
         <h2>Equipment</h2>
@@ -34,9 +33,9 @@
       <template v-for="item in characterStore.inventory">
         <div class="items">
           <Item :item="item.item">
-            <Button text="equip main hand" @click="() => equip(item, 'main_hand')"/>
-            <Button text="equip offhand" v-if="item.slot === 'one_hand' || item.slot === 'offhand'"
-                    @click="() => equip(item, 'offhand')"/>
+              <Button text="equip main hand" @click="() => equip(item, 'main_hand')"/>
+              <Button text="equip offhand" v-if="item.slot === 'one_hand' || item.slot === 'offhand'"
+                      @click="() => equip(item, 'offhand')"/>
           </Item>
         </div>
 
@@ -82,12 +81,17 @@ const equip = (item, slot) => {
     console.log("equipping a two handed weapon")
     oldItems.push(characterStore.equipment.main_hand)
     oldItems.push(characterStore.equipment.offhand)
-  } else if (slot === 'offhand') {
+  }
+  else if (slot === 'offhand') {
     // get two-handed weapon when equipping offhand
-    if (characterStore.equipment.main_hand.slot === 'two_hand') {
+    if (characterStore.equipment.main_hand?.slot === 'two_hand') {
       oldItems.push(characterStore.equipment.main_hand)
     }
-  } else {
+    else {
+      oldItems.push(characterStore.equipment.offhand)
+    }
+  }
+  else {
     // get one item from the same slot
     if (characterStore.equipment[slot]) {
       oldItems.push(characterStore.equipment[slot])
@@ -114,6 +118,7 @@ socketStore.socket.on('GET_INVENTORY', (data) => {
   const equippedItems = {}
   const inventoryItems = []
 
+  console.log(data)
   data.inventory.forEach(item => {
     if (item.equipped) {
       equippedItems[item.equipped] = item
