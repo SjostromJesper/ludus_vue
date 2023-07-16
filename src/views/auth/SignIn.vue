@@ -4,6 +4,7 @@
       <h1>NEW ARENAN</h1>
       <input type="text" placeholder="Username" v-model="email"/>
       <input type="password" placeholder="Password" v-model="password"/>
+      <p class="error" v-if="errorMessage">{{errorMessage}}</p>
       <button type="submit">Sign In</button>
       <p>Don't have an account?
         <router-link to="/sign-up">Sign Up</router-link>
@@ -28,11 +29,19 @@ const router = useRouter()
 
 const email = ref('')
 const password = ref('')
+const errorMessage = ref('')
 
 
 
 const signIn = async () => {
   const data = await auth(email.value, password.value)
+
+  console.log(data)
+
+  if(data.error) {
+    errorMessage.value = data.message
+    return
+  }
 
   userStore.setUser(data.userData)
   userStore.setUserId(data.userData.id)
@@ -62,5 +71,9 @@ const signIn = async () => {
   align-items: center;
   gap: 10px;
   padding-bottom: 80px;
+}
+
+.error {
+  color: red;
 }
 </style>
