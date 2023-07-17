@@ -9,6 +9,7 @@
       lets add news here later
     </div>
 
+    <Map/>
 
   </div>
 </template>
@@ -17,10 +18,15 @@
 import CharacterCreator from "../components/CharacterCreator.vue";
 import {useCharacterStore} from "../stores/characterStore.js";
 import {useSocketStore} from "../stores/socketStore.js";
+import {onMounted} from "vue";
+import Map from "../components/Map.vue";
 
 const characterStore = useCharacterStore()
 const socketStore = useSocketStore()
 
+const sendPos = () => {
+  socketStore.socket.emit('UPDATE_POSITION', {x: 0, y: 0})
+}
 
 </script>
 

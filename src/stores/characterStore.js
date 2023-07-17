@@ -1,6 +1,4 @@
 import {defineStore} from "pinia";
-import {supabase} from "../supabase.js";
-import axios from "axios";
 import {ref} from "vue";
 
 export const useCharacterStore = defineStore('character', () => {
@@ -15,6 +13,8 @@ export const useCharacterStore = defineStore('character', () => {
         feet: null
     })
     const inventory = ref()
+    const characterPosition = ref({x: 0, y: 0})
+    const allPlayerPositions = ref([])
 
     function setCharacter(data) {
         character.value = data
@@ -40,6 +40,18 @@ export const useCharacterStore = defineStore('character', () => {
         inventory.value = data
     }
 
+    function setPosX(data) {
+        characterPosition.value.x += data
+    }
+
+    function setPosY(data) {
+        characterPosition.value.y += data
+    }
+
+    function setAllPlayerPositions(data) {
+        allPlayerPositions.value = data
+    }
+
     function clearCharacter() {
         character.value = null
         equipment.value = null
@@ -50,9 +62,14 @@ export const useCharacterStore = defineStore('character', () => {
         character,
         equipment,
         inventory,
+        characterPosition,
+        allPlayerPositions,
         setCharacter,
         setEquipment,
         setInventory,
+        setPosX,
+        setPosY,
+        setAllPlayerPositions,
         clearCharacter
     }
 }, {persist: {storage: sessionStorage}})
